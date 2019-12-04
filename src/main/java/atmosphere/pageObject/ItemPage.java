@@ -15,7 +15,7 @@ public class ItemPage {
     private Random rand = new Random();
 
     @FindBy(xpath = "//button [@class = 'add-cart product-detail__button product-detail__button-icon']")
-    private WebElement addToCardButton;
+    private WebElement addToCartButton;
 
     @FindBy(xpath = "//a [@href = '/shopping-cart.html' and @class = 'header-cart__trigger drawer-ui__toggle']")
     private WebElement clickOnCartIcon;
@@ -30,22 +30,25 @@ public class ItemPage {
     @FindBys({
             @FindBy (xpath = "//a [@data-value and @data-control-type ='color']")})
     private List<WebElement> colorItemList;
+    @FindBy(xpath = "//h3 [@class = 'input-title product-detail__options-title']")
+    private WebElement colorText;
 
 
-    public String pickColor() {
+    public void pickColor() {
         WebElement randomColor = colorItemList.get(rand.nextInt(colorItemList.size()));
         randomColor.click();
-        return randomColor.getText();
+    }
+    public String colorName(){
+        return colorText.getText();
     }
 
-    public String  pickSize() {
+    public void   pickSize() {
         WebElement randomSize = sizeItemList.get(rand.nextInt(sizeItemList.size()));
         randomSize.click();
-       return randomSize.getText();
     }
 
     public void addItemToCart() {
-        addToCardButton.click();
+        addToCartButton.click();
     }
 
     public void navigateToCart() {

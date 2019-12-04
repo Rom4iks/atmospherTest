@@ -14,6 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class AddToCartTest {
@@ -47,23 +48,27 @@ public class AddToCartTest {
 
         ItemPage itemPage = new ItemPage(webDriver);
 
-        String itemSize =  itemPage.pickSize();
-        webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        String itemColor = itemPage.pickColor();
+        itemPage.pickColor();
+        wait.withTimeout(Duration.ofSeconds(10));
+//        webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        String itemColor = itemPage.colorName();
+        wait.withTimeout(Duration.ofSeconds(10));
+        itemPage.pickSize();
+        webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
-        webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-//        String itemName = itemPage.getItemName();
+        String itemName = itemPage.getItemName();
 
         itemPage.addItemToCart();
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
         itemPage.navigateToCart();
         CartPage cartPage = new CartPage(webDriver);
         String cartItemColor = cartPage.getColor();
-        Assert.assertEquals("Wrong ItemColor in CART",itemColor,cartItemColor);
-        String cartItemSize = cartPage.getSize();
-        Assert.assertEquals("Wrong ItemSize in CART",itemSize,cartItemSize);
+        Assert.assertEquals("Wrong ItemColor in CART",itemColor.toUpperCase().replaceAll("\\s+",""),cartItemColor.toUpperCase().replaceAll("\\s+",""));
+//        String cartItemSize = cartPage.getSize();
+//        Assert.assertEquals("Wrong ItemSize in CART",itemSize,cartItemSize);
         String cartItemName = cartPage.getName();
-//        Assert.assertEquals("Wrong ItemName in CART",itemName,cartItemName);
+        Assert.assertEquals("Wrong ItemName in CART",itemName.toUpperCase(),cartItemName.toUpperCase());
 
     }
 }
