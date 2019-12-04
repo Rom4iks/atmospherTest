@@ -29,11 +29,11 @@ public class AddToCartTest {
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
-//    @After
-//    public void endBrowser(){
-//        webDriver.quit();
-//        webDriver.close();
-//    }
+    @After
+    public void endBrowser(){
+        webDriver.close();
+        webDriver.quit();
+    }
 
     @Test
     public void verifyAddToCart() {
@@ -63,12 +63,12 @@ public class AddToCartTest {
 
         itemPage.navigateToCart();
         CartPage cartPage = new CartPage(webDriver);
+        String cartItemName = cartPage.getName();
+        Assert.assertEquals("Wrong ItemName in CART",itemName.toUpperCase(),cartItemName.toUpperCase());
         String cartItemColor = cartPage.getColor();
         Assert.assertEquals("Wrong ItemColor in CART",itemColor.toUpperCase().replaceAll("\\s+",""),cartItemColor.toUpperCase().replaceAll("\\s+",""));
 //        String cartItemSize = cartPage.getSize();
 //        Assert.assertEquals("Wrong ItemSize in CART",itemSize,cartItemSize);
-        String cartItemName = cartPage.getName();
-        Assert.assertEquals("Wrong ItemName in CART",itemName.toUpperCase(),cartItemName.toUpperCase());
 
     }
 }
